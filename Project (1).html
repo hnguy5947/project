@@ -1,0 +1,107 @@
+<!doctype>
+<html>
+<style>
+    body {
+   background-image: url("easy.png");
+   background-color: #cccccc;
+}
+        .card
+        {width:400px;
+		margin:5px;
+        padding:10px;
+        display:inline-block;
+		border-radius:10px;
+		box-shadow:black 5px 5px 5px;
+        color: white;
+        fill: white;
+        background-color: gray;
+	}
+    h1{
+        color:white;
+		font-family:"Times New Roman";
+		text-shadow:lightblue 3px 3px 3px 3px;
+	}
+    h2{
+        stroke:#cccccc;
+        font-family:"Times New Roman";
+		text-shadow:black 3px 3px 3px ;
+        font-size:36px;
+        color:white;
+    }
+    p{
+        color:white;
+        font-size:16pt;
+    }
+    a{
+        margin: 30px;
+        font-size:12pt;
+        font-family: "Comic Sans MS";        
+        border-radius:1px;
+        padding:20px;
+        color:aliceblue;
+        text-shadow: black 3px 3px 3px ;
+    }
+    .card:hover{
+        transform:rotateZ(30deg)
+}
+  *{
+    transition:1s;
+    }
+
+
+            
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+<script type="text/template" id="template">
+	<div class="card">
+		<h1> Leading cause: {{leading_cause}} </h1>
+		<p> <marquee> Death: {{deaths}}</marquee> </p>
+		<p> ( Death Rate: {{death_rate}} , Age adjusted: {{age_adjusted_death_rate}} )</p>
+		<p> When?: {{ year }} </p>
+		<p> Sex: {{ sex }} </p>
+	</div>
+</script>
+    <script>
+         var data;
+            function search(){
+            $.getJSON("https://data.cityofnewyork.us/resource/uvxr-2jwn.json", function(results){
+            data = results;
+            })
+        }
+            function showdeaths(){
+                var build ="";
+                var output = document.getElementById("output");
+                var death = document.getElementById("death");
+                var temp = document.getElementById("template").innerHTML;
+                for(var index = 0; index < data.length; index++){
+                if(data[index].leading_cause.toLowerCase().indexOf(death.value.toLowerCase()) !=  -1){
+                    build += Mustache.render(temp,data[index]);
+
+
+            }
+            }
+            output.innerHTML = "<h1>Death: " + "</h1><br>" + build;
+            }
+
+
+    </script>
+  <body onload = "search()">
+        <div align="center">
+        <h2>Causes of Death In NYC</h2>
+        <a>Something to give you quite the spook,to have you quaking in your boots, a data set so scary, terrifying to the ear, it will have you shuddering and shaking in fear.This particular data set that we coded displays the deaths in New York City. It displays the causes of death, age of the deceased, year they died, sex, race/ethnicity, deaths, and death rate.
+ </a>
+<img src="l.PNG" alt="Json" width="500" height="377">
+        </div>
+ <div align = "center">
+        <input type = "text" id = "death" placeholder = "Enter cause of death">
+        <button onclick = "showdeaths()"> Display </button>
+        <div id = "output">
+       </div>
+       <audio controls>
+  <source src="woman-scream-01.mp3" type="audio/mpeg">
+</audio>
+
+    </body>
+</html>
